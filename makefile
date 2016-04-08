@@ -18,13 +18,15 @@ CFLAGS=-g -std=c99 -Wall -Wmissing-prototypes $(GTKFLAGS)
 #CFLAGS=-O3 -std=c99 -Wall -Wmissing-prototypes $(GTKFLAGS)
 
 # desired build targets
-TARGETS=example-0
+ODIR=bin
+_TARGETS=example-0
+TARGETS=$(patsubst %,$(ODIR)/%,$(_TARGETS))
 
 # libraries required during linking
 LIBS=
 WINLIBS=
 
-all: $(TARGETS)
+all: setup $(TARGETS)
 
 test:
 	echo $@
@@ -35,8 +37,12 @@ test:
 # build the executables
 %.exe: %.c $(WINLIBS)
 	$(WINCC) $(CFLAGS) $(WINLIBS) $< -o $@ $(GTKLIBS)
-%: %.c $(LIBS)
+$(ODIR)/%: %.c $(LIBS)
 	$(CC) $(CFLAGS) $(LIBS) $< -o $@ $(GTKLIBS)
 
+setup:
+	mkdir -p $(ODIR)
+
 clean: 
-	rm -f $(LIBS) $(WINLIBS) $(TARGETS)
+	rm -rf $(ODIR)
+#rm -f $(ODIR)/$(LIBS) $(ODIR)/$(WINLIBS) $(ODIR)/$(TARGETS)
