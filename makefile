@@ -18,6 +18,7 @@ CFLAGS=-g -std=c99 -Wall -Wmissing-prototypes $(GTKFLAGS)
 #CFLAGS=-O3 -std=c99 -Wall -Wmissing-prototypes $(GTKFLAGS)
 
 # desired build targets
+SDIR=src
 ODIR=bin
 _TARGETS=example-0
 TARGETS=$(patsubst %,$(ODIR)/%,$(_TARGETS))
@@ -37,7 +38,7 @@ test:
 # build the executables
 %.exe: %.c $(WINLIBS)
 	$(WINCC) $(CFLAGS) $(WINLIBS) $< -o $@ $(GTKLIBS)
-$(ODIR)/%: %.c $(LIBS)
+$(ODIR)/%: $(SDIR)/%.c $(LIBS)
 	$(CC) $(CFLAGS) $(LIBS) $< -o $@ $(GTKLIBS)
 
 setup:
